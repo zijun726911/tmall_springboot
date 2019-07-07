@@ -9,65 +9,44 @@
         var data4Vue = {
             uri:'categories',
             beans: [],
-            bean:{id:0,name:''},
+            bean: { id: 0, name: ''},
             pagination:{},
-            file:null
-
+            file: null
         };
 
         //ViewModel
         var vue = new Vue({
             el: '#workingArea',
             data: data4Vue,
-
             mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
                 this.list(0);
-
             },
             methods: {
                 list:function(start){
-                    var url =  this.uri+"?start="+start;
+                    var url =  this.uri+ "?start="+start;
                     axios.get(url).then(function(response) {
-                        vue.pagination=response.data;
-                        vue.beans = response.data.content;
+                        vue.pagination = response.data;
+                        vue.beans = response.data.content	;
                     });
                 },
+                add: function () {
+                    if(!checkEmpty(this.bean.name, "分类名称"))
+                        return;
+                    if(!checkEmpty(this.file, "分类图片"))
+                        return;
+                    var url = this.uri;
 
-                add:function(){
-                  if(!checkEmpty(this.bean.name,"category name")){
-                      return;
-                  }
-                  if(!checkEmpty(this.file,"category image")) {
-                      return;
-                  }
-                  var url=this.uri;
-                  //axios上传文件要用到formData
-
-                  var formData=new FormData();
-                  formData.append("image",this.file);
-                  formData.append("name",this.bean.name);
-                  axios.post(url,formData).then(function (response) {
-                     vue.list(0);
-                     vue.bean={id:0,name:''};
-                     $("#categoryPic").val('');
-                     vue.file=null;
-                  });
-
-
-
+                    //axios.js 上传文件要用 formData 这种方式
+                    var formData = new FormData();
+                    formData.append("image", this.file);
+                    formData.append("name", this.bean.name);
+                    axios.post(url,formData).then(function(response){
+                        vue.list(0);
+                        vue.bean = { id: 0, name: '', hp: '0'};
+                        $("#categoryPic").val('');
+                        vue.file = null;
+                    });
                 },
-                getFile:function(event){
-                    this.file=event.target.files[0];
-                },
-                jump:function(page){
-                    //定义在adminHeader.html中
-                    jump(page,vue);
-                },
-
-                jumpByNumber:function(start){
-                    jumpByNumber(start,vue);
-                },
-
                 deleteBean: function (id) {
                     if(!checkDeleteLink())
                         return;
@@ -80,17 +59,22 @@
                             vue.list(0);
                         }
                     });
+                },
+                getFile: function (event) {
+                    this.file = event.target.files[0];
+                },
+                jump: function(page){
+                    jump(page,vue); //定义在adminHeader.html 中
+                },
+                jumpByNumber: function(start){
+                    jumpByNumber(start,vue);
                 }
             }
         });
-
-
-
     });
 
 </script>
 <div id="workingArea" >
-
     <h1 class="label label-info" >分类管理</h1>
     <br>
     <br>
@@ -132,24 +116,21 @@
             </tbody>
         </table>
     </div>
-    <div th:replace="include/admin/adminPage::html"></div>
+    <div th:replace="include/admin/adminPage::html" ></div>
     <div class="panel panel-warning addDiv">
         <div class="panel-heading">新增分类</div>
         <div class="panel-body">
             <table class="addTable">
                 <tr>
                     <td>分类名称</td>
-                    <td><input @keyup.enter="add" v-model.trim="bean.name"
-                               type="text" class="form-control" /></td>
+                    <td><input  @keyup.enter="add" v-model.trim="bean.name" type="text" class="form-control"></td>
                 </tr>
-
                 <tr>
                     <td>分类图片</td>
                     <td>
                         <input id="categoryPic" accept="image/*" type="file" name="image" @change="getFile($event)" />
                     </td>
                 </tr>
-
                 <tr class="submitTR">
                     <td colspan="2" align="center">
                         <a href="#nowhere"  @click="add" class="btn btn-success">提交</a>
@@ -158,9 +139,7 @@
             </table>
         </div>
     </div>
-
 </div>
 <div th:replace="include/admin/adminFooter::html" ></div>
-
 </body>
 </html>

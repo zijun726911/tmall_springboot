@@ -49,8 +49,7 @@
         Vue.filter('formatDateFilter', function (value, formatString) {
             if(null==value)
                 return "";
-
-            formatString = formatString || 'YYYY-MM-DD HH:mm:ss';//如果formatString为空赋值formatString='YYYY-MM-DD HH:mm:ss'
+            formatString = formatString || 'YYYY-MM-DD HH:mm:ss';
             return moment(value).format(formatString);
         });
     });
@@ -146,6 +145,7 @@
     </div>
 
     <div th:replace="include/admin/adminPage::html" ></div>
+
 
 </div>
 

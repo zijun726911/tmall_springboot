@@ -7,7 +7,6 @@
 <script>
     $(function(){
         var pid = getUrlParms("pid");
-        console.log("in list image pid:"+pid);
         var data4Vue = {
             uri:'productImages',
             singleProductImages: [],
@@ -91,7 +90,7 @@
                 },
                 getDetailFile: function (event) {
                     this.detailFile = event.target.files[0];
-                }
+                },
             }
 
         });
@@ -103,7 +102,7 @@
     <ol class="breadcrumb">
         <li><a href="admin_category_list">所有分类</a></li>
         <li><a :href="'admin_product_list?cid='+category.id">{{category.name}}</a></li>
-        <li class="active"  >{{product.name}}</li>
+        <li class="active">{{product.name}}</li>
         <li class="active">产品图片管理</li>
     </ol>
 
@@ -202,6 +201,8 @@
     </table>
 
 </div>
+
+
 
 <div th:replace="include/admin/adminFooter::html" ></div>
 </body>

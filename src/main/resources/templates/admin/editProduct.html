@@ -42,7 +42,6 @@
                         return;
                     var url = this.uri;
                     axios.put(url,vue.bean).then(function(response){
-                        //强制刷新页面
                         location.href=vue.listURL+"?cid="+vue.category.id;
                     });
                 }
@@ -58,6 +57,8 @@
         <li><a :href="'admin_product_list?cid='+category.id">{{category.name}}</a></li>
         <li class="active">产品管理</li>
     </ol>
+
+
 
     <div class="panel panel-warning editDiv">
         <div class="panel-heading">编辑产品</div>
@@ -101,3 +102,8 @@
 <div th:replace="include/admin/adminFooter::html" ></div>
 </body>
 </html>
+
+
+
+
+
